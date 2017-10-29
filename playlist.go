@@ -644,3 +644,15 @@ func (c *Client) SetPlaylistImage(userID string, playlistID ID, img io.Reader) e
 	req.Header.Set("Content-Type", "image/jpeg")
 	return c.execute(req, nil, http.StatusAccepted)
 }
+
+// NextTrackResults loads the next page of tracks into the specified search result.
+func (c *Client) NextPlaylistTrackResults(p *PlaylistTrackPage) error {
+	// Should be able to check p.Next is nil? It doesn't seem to get cleared out....
+	//if s.Playlists == nil || s.Playlists.Next == "" {
+	//	return ErrNoMorePages
+	//}
+	if p.Offset+p.Limit >= p.Total {
+		return ErrNoMorePages
+	}
+	return c.get(p.Next, p)
+}
