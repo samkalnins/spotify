@@ -654,3 +654,11 @@ func (c *Client) NextPlaylistTrackResults(p *PlaylistTrackPage) error {
 	}
 	return c.get(p.Next, p)
 }
+
+// NextPlaylistResults loads the next page of playlists into the specified search result.
+func (c *Client) NextUserPlaylistResults(s *SimplePlaylistPage) error {
+	if s.Offset+s.Limit >= s.Total {
+		return ErrNoMorePages
+	}
+	return c.get(s.Next, s)
+}
